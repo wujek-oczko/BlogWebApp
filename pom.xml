@@ -13,6 +13,7 @@
         <javax.servlet>3.1.0</javax.servlet>
         <spring.version>4.3.0.RELEASE</spring.version>
         <jackson.library>2.7.5</jackson.library>
+        <environment.url>localhost</environment.url>
     </properties>
 
     <dependencies>
@@ -45,5 +46,34 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>CI</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.wildfly.plugins</groupId>
+                        <artifactId>wildfly-maven-plugin</artifactId>
+                        <version>1.2.0.Final</version>
+                        <configuration>
+                            <hostname>${environment.url}</hostname>
+                            <port>9990</port>
+                            <username>admin</username>
+                            <password>admin</password>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
